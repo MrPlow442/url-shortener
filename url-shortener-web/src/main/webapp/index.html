@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Url Shortener Help</title>
+</head>
+<body>
+    <h1>Readme</h1>
+
+    <h2>Requirements</h2>
+    <ul>
+        <li>JDK 8uxx - <a href="http://www.oracle.com/technetwork/java/javase/downloads/index-jsp-138363.html">download latest JDK</a></li>
+        <li>Application server for Java web applications - <a href="http://tomcat.apache.org/download-80.cgi#8.5.6">download Apache Tomcat 8.5.6</a></li>
+    </ul>
+
+    <h2>How to run the application</h2>
+    <p>From within </p>
+    <pre>url-shortener-web</pre>
+    <p>module run the following maven command <code>spring-boot:run</code> which will run the application using the embedded tomcat server, or build a war archive and deploy it onto the application server. The latter is explained in the next section.</p>
+
+    <h2>How to build a deployable war archive</h2>
+    <p>To build a deployable war archive run the following maven command <code>clean install</code> from within</p>
+    <pre>url-shortener-web</pre>
+    <p>module. The built war file is located inside the target directory of the module.</p>
+
+    <h2>How to deploy the war file onto an Apache Tomcat application server</h2>
+    <p>Place the war file inside webapps directory of installed Apache Tomcat and then start the application server using either startup.sh for *nix or startup.bat for windows operating systems</p>
+
+    <h2>How to use the service</h2>
+    <p>The service exposes the following actions</p>
+    <table>
+        <thead>
+            <tr>
+                <th>URI</th>
+                <th>HTTP Method</th>
+                <th>Requires authentication*</th>
+                <th>Description</th>
+                <th>Request type</th>
+                <th>Sample request</th>
+                <th>Response type</th>
+                <th>Sample response</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>/account</td>
+                <td>POST</td>
+                <td>NO</td>
+                <td>Creates a new service account for given accountId</td>
+                <td>application/json</td>
+                <td>
+                    <code>
+                        {
+                            "accountId":"mlovrekov"
+                        }
+                    </code>
+                </td>
+                <td>application/json</td>
+                <td>
+                    <code>
+                        {
+                            "success":true,
+                            "description":"Your account is opened",
+                            "password":"0fGaW3kC"
+                        }
+                    </code>
+                </td>
+            </tr>
+            <tr>
+                <td>/register</td>
+                <td>POST</td>
+                <td>YES</td>
+                <td>Generates and registers a short url for a given long url</td>
+                <td>application/json</td>
+                <td>
+                    <code>
+                        {
+                            "url":"http://stackoverflow.com/",
+                            "redirectType":301
+                        }
+                    </code>
+                </td>
+                <td>application/json</td>
+                <td>
+                    <code>
+                        {
+                            "shortUrl":"http://host.com/Wsy3gH5a"
+                        }
+                    </code>
+                </td>
+            </tr>
+            <tr>
+                <td>/statistic/{accountId}</td>
+                <td>GET</td>
+                <td>YES</td>
+                <td>Returns hit statistics for each url registered by provided account</td>
+                <td>application/json</td>
+                <td>
+                    <code>
+                    </code>
+                </td>
+                <td>application/json</td>
+                <td>
+                    <code>
+                        {
+                            "http://stackoverflow.com/":68,
+                            "http://reddit.com/r/java":12
+                        }
+                    </code>
+                </td>
+            </tr>
+            <tr>
+                <td>/{token}</td>
+                <td>GET</td>
+                <td>NO</td>
+                <td>Redirects user to long url registered to given token</td>
+                <td></td>
+                <td>
+                    <code>
+                    </code>
+                </td>
+                <td></td>
+                <td>
+                    <code>
+                    </code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>*Authentication is done using HTTP basic. Request must provide <code>Authorization Basic [base64]username:password[/base64]</code> header</p>
+</body>
+</html>
