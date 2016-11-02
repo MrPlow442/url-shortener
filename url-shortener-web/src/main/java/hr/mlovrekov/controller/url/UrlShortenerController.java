@@ -35,7 +35,7 @@ public class UrlShortenerController {
      */
     @RequestMapping(path = "/register", method = RequestMethod.POST)
     public ShortUrlDto register(@Valid @RequestBody RegisterCommand command, Principal principal, HttpServletRequest httpRequest) {
-        return urlShortenerService.register(URLUtils.extractRootFromURL(httpRequest.getRequestURL().toString()),
+        return urlShortenerService.register(URLUtils.extractRootFromURL(httpRequest.getRequestURL().toString()) + httpRequest.getContextPath(),
                 command.getUrl(),
                 principal.getName(),
                 command.getRedirectType());
